@@ -1,3 +1,9 @@
+const LOCALSTORAGE_SEARCHENGINE_KEY = "LOCALSTORAGE_SEARCHENGINE_KEY";
+const LOCALSTORAGE_WEATHERPOINTID_KEY = "LOCALSTORAGE_WEATHERPOINTID_KEY";
+const LOCALSTORAGE_WEATHERDATA_KEY = "LOCALSTORAGE_WEATHERDATA_KEY";
+const LOCALSTORAGE_CARDS_VISIBLE_KEY = "LOCALSTORAGE_CARDS_VISIBLE_KEY";
+const LOCALSTORAGE_CARDDATA_KEY = "LOCALSTORAGE_CARDDATA_KEY";
+
 /**
  * Initialize the application when DOM is loaded
  */
@@ -6,16 +12,13 @@ document.addEventListener("DOMContentLoaded", function () {
     updateClock();
     setInterval(updateClock, 1000);
     updateDate();
-    // Load Searchengine data from localstorage
-    renderSearchEngineURL(getSearchEngineUrl());
     // Load Group data from localstorage
     renderLinkGroups(getLinkGroups());
     // Load work toggle button from localstorage and update view 
     document.getElementById("toggle-work").checked = areWorkCardsVisible();
-    renderWorkCards(areWorkCardsVisible())
+    renderWorkCards(areWorkCardsVisible());
     // Fetch weather data
-    const id_vienna = 2193
-    fetchAndRenderWeatherData(id_vienna);
+    fetchAndRenderWeatherData(getWeatherPointID());
     // 
     // Initialize event listeners
     // 
@@ -34,14 +37,22 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("settings-toggle").addEventListener("click", function () {
         document.getElementById("settings-panel").classList.add("active");
         updateExportData();
+        // render WeatherPointID from localStorage
+        renderWeatherPointID(getWeatherPointID());
+        // Load Searchengine data from localstorage
+        renderSearchEngineURL(getSearchEngineUrl());
     });
     // Close settings panel
     document.getElementById("close-settings").addEventListener("click", function () {
         document.getElementById("settings-panel").classList.remove("active");
     });
-    // Export button
+    // Save SearchEngine button
     document.getElementById("save-search-engine-btn").addEventListener("click", function () {
         saveSearchEngineUrl(document.getElementById("search-engine").value);
+    });
+    // Save WeatherPointID button
+    document.getElementById("save-weather-point-btn").addEventListener("click", function () {
+        fetchAndRenderWeatherData(saveWeatherPointID(document.getElementById("weather-point").value));
     });
     // Export button
     document.getElementById("export-btn").addEventListener("click", function () {
@@ -101,7 +112,7 @@ function updateDate() {
  * @returns the `weatherData`
  */
 function saveWeatherData(weatherData) {
-    localStorage.setItem("weatherData", JSON.stringify({
+    localStorage.setItem(LOCALSTORAGE_WEATHERDATA_KEY, JSON.stringify({
         date: Date.now(),
         weatherData: weatherData
     }));
@@ -115,7 +126,7 @@ function saveWeatherData(weatherData) {
  */
 function getDailyWeatherStats() {
     try {
-        const parsedData = JSON.parse(localStorage.getItem("weatherData"));
+        const parsedData = JSON.parse(localStorage.getItem(LOCALSTORAGE_WEATHERDATA_KEY));
         const today = new Date();
         const parsed = new Date(parsedData.date);
         if (parsed.getDate() === today.getDate()
@@ -124,7 +135,7 @@ function getDailyWeatherStats() {
             && Array.isArray(parsedData.weatherData)
             && parsedData.weatherData.length
         ) {
-            return parsedData.weatherData
+            return parsedData.weatherData;
         }
     } catch (e) {
         console.error("Failed to parse weather data:", e);
@@ -137,7 +148,7 @@ function getDailyWeatherStats() {
  * @returns true if work cards should be visible else false.
  */
 function areWorkCardsVisible() {
-    return localStorage.getItem("workCardsVisible") === "true";
+    return localStorage.getItem(LOCALSTORAGE_CARDS_VISIBLE_KEY) === "true";
 }
 
 /**
@@ -146,7 +157,7 @@ function areWorkCardsVisible() {
  * @returns the `value`
  */
 function saveWorkCardsVisible(value) {
-    localStorage.setItem("workCardsVisible", value ? "true" : "false");
+    localStorage.setItem(LOCALSTORAGE_CARDS_VISIBLE_KEY, value ? "true" : "false");
     return value;
 }
 
@@ -163,13 +174,51 @@ function renderWorkCards(workCardsVisible) {
 }
 
 /**
+ * Load weather point id from localstorage.
+ * If no point is present, load and save the default point.
+ * @returns {String} the pointID as string
+ */
+function getWeatherPointID() {
+    // ID for vienna
+    const default_pointID = 2193;
+    const localStorageUrl = localStorage.getItem(LOCALSTORAGE_WEATHERPOINTID_KEY);
+    if (localStorageUrl) {
+        try {
+            return JSON.parse(localStorageUrl);
+        } catch (e) {
+            console.error("Failed to parse saved Weather Point ID:", e);
+        }
+    }
+    return saveWeatherPointID(default_pointID);
+
+}
+
+/**
+ * Render the weather point in the settings input field
+ * @param {String|int} pointID the point id
+ */
+function renderWeatherPointID(pointID) {
+    document.getElementById("weather-point").value = pointID;
+}
+
+/**
+ * Saves the provided `pointID` to localStorage
+ * @param {*} pointID the point id to save
+ * @returns the provided point id
+ */
+function saveWeatherPointID(pointID) {
+    localStorage.setItem(LOCALSTORAGE_WEATHERPOINTID_KEY, JSON.stringify(pointID));
+    return pointID;
+}
+
+/**
  * Load search engine url from localStorage. 
  * If no url is present load and save the default url.
  * @returns {String} the searchengine url as string
  */
 function getSearchEngineUrl() {
     const default_url = "https://duckduckgo.com/?q=";
-    const localStorageUrl = localStorage.getItem("searchEngineURL");
+    const localStorageUrl = localStorage.getItem(LOCALSTORAGE_SEARCHENGINE_KEY);
     if (localStorageUrl) {
         try {
             return JSON.parse(localStorageUrl);
@@ -177,7 +226,7 @@ function getSearchEngineUrl() {
             console.error("Failed to parse saved Searchengine URL:", e);
         }
     }
-    return saveSearchEngineUrl(default_url)
+    return saveSearchEngineUrl(default_url);
 }
 
 /**
@@ -188,13 +237,13 @@ function renderSearchEngineURL(url) {
 }
 
 /**
- * Saves the provided `url` to localStorage and updates the view
+ * Saves the provided `url` to localStorage
  * @param {String} url the search engine url to save
  * @returns {String} the provided url
  */
 function saveSearchEngineUrl(url) {
-    localStorage.setItem("searchEngineURL", JSON.stringify(url));
-    return url
+    localStorage.setItem(LOCALSTORAGE_SEARCHENGINE_KEY, JSON.stringify(url));
+    return url;
 }
 
 /**
@@ -203,7 +252,7 @@ function saveSearchEngineUrl(url) {
  * @returns {Array} linkGroups List of linkGroups
  */
 function getLinkGroups() {
-    const linkGroups = localStorage.getItem("linkGroups")
+    const linkGroups = localStorage.getItem(LOCALSTORAGE_CARDDATA_KEY);
     if (linkGroups) {
         try {
             return JSON.parse(linkGroups);
@@ -295,8 +344,8 @@ function renderLinkGroups(linkGroups) {
  * @returns the `linkGroups`
  */
 function saveLinkGroups(linkGroups) {
-    localStorage.setItem("linkGroups", JSON.stringify(linkGroups));
-    return linkGroups
+    localStorage.setItem(LOCALSTORAGE_WEATHERDATA_KEY, JSON.stringify(linkGroups));
+    return linkGroups;
 }
 
 /**
@@ -315,7 +364,7 @@ async function fetchAndRenderWeatherData(point) {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            
+
             weatherData = processWeatherData(await response.json());
             saveWeatherData(weatherData);
         }
@@ -343,7 +392,6 @@ function renderWeatherUI(weatherData) {
         });
 
         if (weatherData[dateStr]) {
-
             document.getElementById(`weather-date-${index}`).textContent = dateStr;
             document.getElementById(`weather-day-${index}`).textContent = weekday;
             document.getElementById(`min-temp-${index}`).textContent = weatherData[dateStr].minTemp.toFixed(1);
@@ -417,11 +465,21 @@ function updateExportData() {
         version: 1,
         timestamp: Date.now(),
         searchEngineURL: getSearchEngineUrl(),
-        linkGroups: getLinkGroups(),
-        workCardsVisible: areWorkCardsVisible()
+        workCardsVisible: areWorkCardsVisible(),
+        weatherPointID: getWeatherPointID(),
+        linkGroups: getLinkGroups()
     };
 
-    document.getElementById("export-data").value = JSON.stringify(exportData, null, 2);
+    json_data = JSON.stringify(exportData, null, 2);
+    document.getElementById("export-data").value = json_data;
+    // write to clipboard
+    navigator.clipboard.write([
+        new ClipboardItem(
+            {
+                ["text/plain"]: json_data
+            }
+        )
+    ])
 }
 
 /**
@@ -441,7 +499,8 @@ function importData() {
         if (!Object.hasOwn(importData, "linkGroups") ||
             !Array.isArray(importData.linkGroups) ||
             !Object.hasOwn(importData, "searchEngineURL") ||
-            !Object.hasOwn(importData, "workCardsVisible")) {
+            !Object.hasOwn(importData, "workCardsVisible") ||
+            !Object.hasOwn(importData, "weatherPointID")) {
             throw new Error("Invalid import data format");
         }
 
@@ -463,9 +522,9 @@ function importData() {
             renderLinkGroups(saveLinkGroups(importData.linkGroups));
             renderSearchEngineURL(saveSearchEngineUrl(importData.searchEngineURL));
             renderWorkCards(saveWorkCardsVisible(importData.workCardsVisible));
+            renderWeatherPointID(saveWeatherPointID(importData.weatherPointID));
             alert("Import successful!");
         }
-
     } catch (e) {
         console.error("Import error:", e);
         alert("Error importing data: " + e.message);

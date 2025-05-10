@@ -204,6 +204,19 @@
                 <button class="btn" id="save-search-engine-btn">Save</button>
             </div>
 
+            <h3 class="settings-title">Weather Point ID</h3>
+            <p class="settings-description">
+                Find the point by searching on <a href="https://www.geosphere.at/de/karten/wetterprognose">[Geosphere]</a> and then look at
+                the url.
+            </p>
+            <div class="form-group">
+                <label class="form-label" for="weather-point">Point ID</label>
+                <input class="form-input" type="number" id="weather-point" />
+            </div>
+            <div class="btn-container">
+                <button class="btn" id="save-weather-point-btn">Save</button>
+            </div>
+
             <h3 class="settings-title">Import/Export Configuration</h3>
             <p class="settings-description">
                 To edit your links and groups, export the current configuration, 
@@ -218,7 +231,7 @@
                 <textarea class="form-textarea" id="import-data" placeholder="Paste your modified JSON data here..."></textarea>
             </div>
             <div class="btn-container">
-                <button class="btn" id="export-btn">Copy to Clipboard</button>
+                <button class="btn" id="export-btn">Update & Copy to Clipboard</button>
                 <button class="btn" id="import-btn">Import</button>
             </div>
         </div>
