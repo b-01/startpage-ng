@@ -169,10 +169,10 @@ A link has the following attributes:
 Building your own version is simple:
 
 1. Clone this repository
-2. Edit the files to your liking ([src/](/src/) folder)
+2. Edit the files to your liking ([src/](src/) folder)
 3. Host them on any webserver or Codeberg/Github pages
 
 If you want to minify the sources, you can do the following between steps 2 and 3 above:
 1. Download [minify](https://github.com/tdewolff/minify) from Github Releases
-2. Put the file into the [build/](/build/) folder
-3. Run [build.sh](/build/build.sh) within the build folder <br> This generates minified versions of all three files and also updates the HTML to use the smaller files.
+2. Put the file into the [build/](build/) folder
+3. Run [build.sh](build/build.sh) within the build folder <br> This generates minified versions of all three files and also updates the HTML to use the smaller files.
