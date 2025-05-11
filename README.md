@@ -2,7 +2,7 @@
 
 Simple HTML Startpage that displays the time, date, weather, a searchbar and customizable (plus hideable) cards.
 
-It is the second iteration of this kind of startpage I made ([Startpage-ng](https://codeberg.org/b01/startpage)). 
+It is the second iteration of this kind of startpage I made ([Startpage](https://codeberg.org/b01/startpage)). 
 This time the page can be used and configured without any external dependencies like python/jinja2 etc.
 Settings can be changed directly within the startpage and the configuration is stored in LocalStorage of the browser. To not lose any data, one can also export the configuration (as JSON text). This JSON can then be transferred to another browser and imported again.
 
