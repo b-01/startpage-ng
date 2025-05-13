@@ -344,7 +344,7 @@ function renderLinkGroups(linkGroups) {
  * @returns the `linkGroups`
  */
 function saveLinkGroups(linkGroups) {
-    localStorage.setItem(LOCALSTORAGE_WEATHERDATA_KEY, JSON.stringify(linkGroups));
+    localStorage.setItem(LOCALSTORAGE_CARDDATA_KEY, JSON.stringify(linkGroups));
     return linkGroups;
 }
 
