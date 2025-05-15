@@ -26,11 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchBar = document.getElementById("search-bar");
     searchBar.addEventListener("keydown", function (e) {
         if (e.key === "Enter") {
-            const query = this.value.trim();
-
-            if (query) {
-                window.open(`${getSearchEngineUrl()}${encodeURIComponent(query)}`, "_blank");
-            }
+            search(this.value);
         }
     });
     // Settings panel toggle
@@ -67,6 +63,57 @@ document.addEventListener("DOMContentLoaded", function () {
         renderWorkCards(saveWorkCardsVisible(this.checked));
     });
 });
+
+/**
+ * Check if a string is a URL/Domain 
+ * @param {String} str The string to check for an URL
+ * @returns true/false
+ */
+function is_url(str) {
+    regexp = /^(?:(?:https?):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+    if (regexp.test(str)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Search function. Either uses the keywords with the defined search engine, directly
+ * opens the site in a new tab or uses the default search engine.
+ * @param {String} raw_query The raw query entered by the user.
+ */
+function search(raw_query) {
+    const query = raw_query.trim();
+    var urlToOpen = "";
+
+    if (query) {
+        switch (query.substring(0, 2)) {
+            // Duckduckgo - search with DDGO.
+            case "-d":
+                urlToOpen = `https://duckduckgo.com/?q=${encodeURIComponent(query.substr(3))}`;
+                break;
+            // DeepL - Translate Text from German to English
+            case "-t":
+                urlToOpen = `https://www.deepl.com/en/translator#de/en/${encodeURIComponent(query.substr(3))}`;
+                break;
+            // Startpage - search with Startpage
+            case "-s":
+                urlToOpen = `https://www.startpage.com/do/dsearch?prfe=4fb272a9fd7b618b9a28a5d2ca2896e5833d809fd708caa6aa28761082f8ab66dc198d69e09c17028ae46f98d6d92b81c61756ec7b4f2ba024a855760df61e44557d06214932bd14d869d7d42ebf4f164748&query=${encodeURIComponent(query.substr(3))}`;
+                break;
+            default:
+                if (is_url(query)) {
+                    urlToOpen = query;
+                    if (!urlToOpen.startsWith("http")) {
+                        urlToOpen = "https://" + urlToOpen;
+                    }
+                } else {
+                    urlToOpen = `${getSearchEngineUrl()}${encodeURIComponent(query)}`;
+                }
+        }
+        window.open(urlToOpen, "_blank");
+    }
+}
 
 /**
  * Returns the locale to format date/time.
