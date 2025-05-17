@@ -370,7 +370,7 @@ function renderLinkGroups(linkGroups) {
             linkItem.href = link.url;
             linkItem.target = "_blank";
             linkItem.innerHTML = `
-                <span class="link-icon">${link.icon}</span>
+                <span class="link-icon noto-color-emoji-regular">${link.icon}</span>
                 <span>${link.name}</span>
             `;
 

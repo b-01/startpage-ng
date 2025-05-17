@@ -9,15 +9,6 @@
     --shadow-hover: 0 8px 16px 0 rgba(0, 0, 0, 0.7), 0 12px 28px 0 rgba(0, 0, 0, 0.39);
 }
 
-/* Font imports */
-@font-face {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Roboto'), url('https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2') format('woff2');
-    font-display: swap;
-}
-
 /* Core styles */
 * {
     box-sizing: border-box;
@@ -28,8 +19,13 @@
 body {
     background-color: var(--background-color);
     color: var(--text-color);
-    font-family: 'Roboto', sans-serif;
-    padding: 2rem;
+    font-family: "Noto Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+        "wdth" 100;
+    padding: 0.5rem;
     min-height: 100vh;
 }
 
@@ -41,6 +37,13 @@ a {
 
 a:hover {
     color: var(--highlight-color);
+}
+
+/* font class for emojis */
+.noto-color-emoji-regular {
+    font-family: "Noto Color Emoji", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* Main container */
