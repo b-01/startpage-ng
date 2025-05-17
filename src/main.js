@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     // Export button
     document.getElementById("export-btn").addEventListener("click", function () {
-        updateExportData();
+        updateExportData(true);
     });
     // Import button
     document.getElementById("import-btn").addEventListener("click", function () {
@@ -506,8 +506,9 @@ function processWeatherData(jsonData) {
 
 /**
  * Update the export data textarea with the current settings
+ * @param {boolean} andCopy (optional; default=false) if the updated ExportData should also be copied into the users clipboard.
  */
-function updateExportData() {
+function updateExportData(andCopy=false) {
     const exportData = {
         version: 1,
         timestamp: Date.now(),
@@ -520,13 +521,15 @@ function updateExportData() {
     json_data = JSON.stringify(exportData, null, 2);
     document.getElementById("export-data").value = json_data;
     // write to clipboard
-    navigator.clipboard.write([
-        new ClipboardItem(
-            {
-                ["text/plain"]: json_data
-            }
-        )
-    ])
+    if(andCopy) {
+        navigator.clipboard.write([
+            new ClipboardItem(
+                {
+                    ["text/plain"]: json_data
+                }
+            )
+        ]);
+    }
 }
 
 /**
