@@ -179,8 +179,7 @@ function getDailyWeatherStats() {
         if (parsed.getDate() === today.getDate()
             && parsed.getMonth() === today.getMonth()
             && parsed.getFullYear() === today.getFullYear()
-            && Array.isArray(parsedData.weatherData)
-            && parsedData.weatherData.length
+            && typeof parsedData.weatherData === 'object'
         ) {
             return parsedData.weatherData;
         }
