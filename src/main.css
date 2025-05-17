@@ -29,6 +29,13 @@ body {
     min-height: 100vh;
 }
 
+@media screen and (min-height: 1080px) {
+    body {
+        padding: 2rem;
+    }
+}
+
+
 a {
     color: var(--text-color);
     text-decoration: none;
@@ -55,11 +62,11 @@ a:hover {
     gap: 2rem;
 }
 
-/* For larger screens (e.g., tablets and desktops) */
+/* For larger screens */
 @media screen and (min-width: 1440px) {
     .container {
-        max-width: 80vw;
         /* Use 80% viewport width on larger devices */
+        max-width: 80vw;
     }
 }
 
@@ -69,28 +76,26 @@ a:hover {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
 }
 
 .time {
-    font-size: xx-large;
-    font-weight: 900;
+    font-size: 2rem;
+    font-weight: 600;
 }
 
 .date {
-    font-size: medium;
+    font-size: 1rem;
 }
 
 /* Search */
 .search-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 1rem;
 }
 
 .search-bar {
-    width: 75%;
-    padding: 0.8rem 1rem;
+    width: 60vw;
+    padding: 0.0rem 0rem 0.5rem 0rem;
     border: none;
     border-bottom: 2px solid var(--text-color);
     background-color: transparent;
@@ -104,14 +109,9 @@ a:hover {
     color: var(--highlight-color);
 }
 
-/* Weather */
-.weather-section {
-    margin-bottom: 1rem;
-}
-
 .weather-heading {
     margin-bottom: 1rem;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     text-align: center;
 }
 
@@ -197,14 +197,8 @@ a:hover {
     padding: 6px 10px;
 }
 
-.rain-icon {
-    color: #64B5F6;
-    margin-right: 6px;
-    font-size: 1.1rem;
-}
-
+.rain-icon,
 .wind-icon {
-    color: #29e477;
     margin-right: 6px;
     font-size: 1.1rem;
 }
@@ -236,7 +230,6 @@ a:hover {
     color: #EF9A9A;
 }
 
-
 .section-header {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -246,7 +239,7 @@ a:hover {
 }
 
 .section-title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     text-align: center;
     grid-area: title;
     margin: 0;
@@ -313,11 +306,6 @@ a:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.group-toggle {
-    cursor: pointer;
-    user-select: none;
 }
 
 .card-body {
@@ -464,7 +452,7 @@ a:hover {
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
     .weather-container {
         flex-direction: column;
         align-items: center;
