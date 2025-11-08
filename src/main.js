@@ -404,7 +404,7 @@ async function fetchAndRenderWeatherData(point) {
         if (weatherData === null) {
             // Load data
             const corsProxy = "https://corsproxy.io/?url=";
-            const apiUrl = `https://beta.geosphere.at/data/forecasts/flexi/${point}`;
+            const apiUrl = `https://www.geosphere.at/data/forecasts/flexi/${point}`;
             const response = await fetch(corsProxy + encodeURIComponent(apiUrl));
 
             if (!response.ok) {
