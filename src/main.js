@@ -91,15 +91,15 @@ function search(raw_query) {
         switch (query.substring(0, 2)) {
             // Duckduckgo - search with DDGO.
             case "-d":
-                urlToOpen = `https://duckduckgo.com/?q=${encodeURIComponent(query.substr(3))}`;
+                urlToOpen = `https://duckduckgo.com/?q=${encodeURIComponent(query.substring(3))}`;
                 break;
-            // DeepL - Translate Text from German to English
+            // Kagi - Translate Text from German to English
             case "-t":
-                urlToOpen = `https://www.deepl.com/en/translator#de/en/${encodeURIComponent(query.substr(3))}`;
+                urlToOpen = `https://translate.kagi.com/?to=en&text=${encodeURIComponent(query.substring(3))}`;
                 break;
             // Startpage - search with Startpage
             case "-s":
-                urlToOpen = `https://www.startpage.com/do/dsearch?prfe=4fb272a9fd7b618b9a28a5d2ca2896e5833d809fd708caa6aa28761082f8ab66dc198d69e09c17028ae46f98d6d92b81c61756ec7b4f2ba024a855760df61e44557d06214932bd14d869d7d42ebf4f164748&query=${encodeURIComponent(query.substr(3))}`;
+                urlToOpen = `https://www.startpage.com/do/dsearch?prfe=4fb272a9fd7b618b9a28a5d2ca2896e5833d809fd708caa6aa28761082f8ab66dc198d69e09c17028ae46f98d6d92b81c61756ec7b4f2ba024a855760df61e44557d06214932bd14d869d7d42ebf4f164748&query=${encodeURIComponent(query.substring(3))}`;
                 break;
             default:
                 if (is_url(query)) {
